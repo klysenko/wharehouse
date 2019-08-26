@@ -20,10 +20,10 @@ public class OwnerEntity {
     @Column(name = "FIRST_NAME")
     private String firstName;
 
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     private List<OwnerContactsEntity> contacts;
 
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     private List<ItemEntity> items;
 
     @Column(name = "LAST_NAME")

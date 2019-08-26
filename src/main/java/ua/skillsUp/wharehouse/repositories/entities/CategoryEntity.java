@@ -3,6 +3,7 @@ package ua.skillsUp.wharehouse.repositories.entities;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Entity
@@ -15,8 +16,11 @@ public class CategoryEntity {
     private Long id;
 
     @Column (name = "TITLE")
-    private String title;
+    private String categoryTitle;
 
     @Column (name = "DESCRIPTION")
     private String description;
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "categories")
+    private List<ItemEntity> items;
 }

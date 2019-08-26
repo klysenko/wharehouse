@@ -16,7 +16,7 @@ public class ItemHistoryEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ITEM_ID")
+    @JoinColumn(name = "ITEM_ID", nullable = false)
     private ItemEntity item;
 
     @Column(name = "DATE")
@@ -26,5 +26,5 @@ public class ItemHistoryEntity {
     private int count;
 
     @Column(name = "STATUS")
-    private String  status;
+    private String status = "stored";
 }
