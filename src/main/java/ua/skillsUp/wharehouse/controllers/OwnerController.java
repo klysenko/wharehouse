@@ -33,6 +33,13 @@ public class OwnerController {
         return ownerService.getAllOwners();
     }
 
+    @GetMapping(path = "/active",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Owner> getAllActiveOwners() {
+        log.info("There are owners with items");
+        return ownerService.getAllActiveOwners();
+    }
+
     @GetMapping(path = "/{ownerId}/items",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Item> getAllOwnerItems(@PathVariable(name = "ownerId") long ownerId) {

@@ -4,10 +4,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.skillsUp.wharehouse.converters.ItemHistoryConverter;
+import ua.skillsUp.wharehouse.enums.ItemHistoryStatus;
 import ua.skillsUp.wharehouse.exeptions.NoSuchOwnerException;
 import ua.skillsUp.wharehouse.models.Category;
 import ua.skillsUp.wharehouse.models.Item;
-import ua.skillsUp.wharehouse.repositories.CategoryRepository;
+import ua.skillsUp.wharehouse.models.ItemHistory;
 import ua.skillsUp.wharehouse.repositories.ItemHistoryRepository;
 import ua.skillsUp.wharehouse.repositories.ItemRepository;
 import ua.skillsUp.wharehouse.repositories.OwnerRepository;
@@ -16,8 +17,14 @@ import ua.skillsUp.wharehouse.repositories.entities.ItemEntity;
 import ua.skillsUp.wharehouse.repositories.entities.ItemHistoryEntity;
 import ua.skillsUp.wharehouse.repositories.entities.OwnerEntity;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 import static ua.skillsUp.wharehouse.converters.ItemCategoriesConverter.toCategoryEntity;
@@ -31,16 +38,13 @@ public class ItemService {
     private final OwnerRepository ownerRepository;
     private final ItemRepository itemRepository;
     private final ItemHistoryRepository itemHistoryRepository;
-    private final CategoryRepository categoryRepository;
 
     public ItemService(OwnerRepository ownerRepository,
                        ItemRepository itemRepository,
-                       ItemHistoryRepository itemHistoryRepository,
-                       CategoryRepository categoryRepository) {
+                       ItemHistoryRepository itemHistoryRepository) {
         this.ownerRepository = ownerRepository;
         this.itemRepository = itemRepository;
         this.itemHistoryRepository = itemHistoryRepository;
-        this.categoryRepository = categoryRepository;
     }
 
     public List<Item> getAllItems() {
@@ -48,6 +52,26 @@ public class ItemService {
         List<ItemEntity> entities = itemRepository.findAll();
         return entities.stream()
                 .map(ItemService::toItem)
+                .collect(toList());
+
+    }
+
+    public List<ItemHistory> getItemsStatisticForLastMonth() {
+        LocalDateTime dateFrom = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
+        LocalDateTime dateTo = dateFrom.minusDays(1L);
+        List<ItemHistoryEntity> entityHistories = itemHistoryRepository.findAllByDateBetween(dateTo, dateFrom);
+        return entityHistories.stream()
+                .map(ItemHistoryConverter::toItemHistory)
+                .collect(toList());
+
+    }
+
+    public List<ItemHistory> getItemsStatisticForLastDay() {
+        LocalDateTime dateFrom = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
+        LocalDateTime dateTo = dateFrom.minusMonths(1L);
+        List<ItemHistoryEntity> entityHistories = itemHistoryRepository.findAllByDateBetween(dateTo, dateFrom);
+        return entityHistories.stream()
+                .map(ItemHistoryConverter::toItemHistory)
                 .collect(toList());
 
     }
@@ -113,6 +137,47 @@ public class ItemService {
         itemEntity.setCategories(toCategoryEntity(item.getCategories()));
 
         owner.get().getItems().add(itemEntity);
+    }
+
+    @Transactional
+    public void withdrawItems(Map<Long, Integer> itemIdsByCount) {
+        List<Long> itemIds = new ArrayList<>(itemIdsByCount.keySet());
+        Map<Long, List<ItemHistoryEntity>> itemIdByItemHistories = itemHistoryRepository.findByItemIdsEagerly(itemIds).stream()
+                .collect(Collectors.groupingBy(i -> i.getItem().getId()));
+
+        List<ItemHistoryEntity> itemHistoryEntityToSave = itemIdsByCount.entrySet().stream()
+                .map(itemIdsByCountEntry -> {
+                    Long itemId = itemIdsByCountEntry.getKey();
+                    Integer count = itemIdsByCountEntry.getValue();
+                    List<ItemHistoryEntity> itemHistories = itemIdByItemHistories.get(itemId);
+                    int storedCount = sumCount(itemHistories, ItemHistoryStatus.STORED);
+                    int withdrawedCount = sumCount(itemHistories, ItemHistoryStatus.WITHDRAWED);
+
+                    int balanceCount = storedCount - withdrawedCount;
+
+                    if (balanceCount < count) {
+                        throw new IllegalArgumentException(
+                                String.format("Can't withdraw %d items because only %d available", count, balanceCount)
+                        );
+                    }
+
+                    ItemHistoryEntity itemHistoryEntity = new ItemHistoryEntity();
+                    itemHistoryEntity.setStatus(ItemHistoryStatus.WITHDRAWED.toString());
+                    itemHistoryEntity.setDate(LocalDateTime.now());
+                    itemHistoryEntity.setCount(count);
+                    itemHistoryEntity.setItem(itemHistories.get(0).getItem());
+                    return itemHistoryEntity;
+                })
+                .collect(toList());
+
+        itemHistoryRepository.saveAll(itemHistoryEntityToSave);
+    }
+
+    private int sumCount(List<ItemHistoryEntity> itemHistories, ItemHistoryStatus status) {
+        return itemHistories.stream()
+                .filter(itemHistory -> itemHistory.getStatus().equals(status.toString()))
+                .map(ItemHistoryEntity::getCount)
+                .reduce(0, Integer::sum);
     }
 
 }

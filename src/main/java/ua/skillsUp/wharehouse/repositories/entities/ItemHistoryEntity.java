@@ -1,6 +1,7 @@
 package ua.skillsUp.wharehouse.repositories.entities;
 
 import lombok.Data;
+import ua.skillsUp.wharehouse.enums.ItemHistoryStatus;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -26,5 +27,5 @@ public class ItemHistoryEntity {
     private int count;
 
     @Column(name = "STATUS")
-    private String status = "stored";
+    private String status = ItemHistoryStatus.STORED.toString();
 }

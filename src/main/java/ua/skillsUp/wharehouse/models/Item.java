@@ -1,5 +1,6 @@
 package ua.skillsUp.wharehouse.models;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;

@@ -48,9 +48,7 @@ public class OwnerService {
     }
 
     public List<Owner> getAllActiveOwners() {
-        List<OwnerEntity> entities = ownerRepository.findAll();
-
-
+        List<OwnerEntity> entities = ownerRepository.findAllByItemsNotNull();
 
         return entities.stream()
                 .map(OwnerConverter::toOwner)
