@@ -5,6 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ua.skillsUp.wharehouse.models.Item;
 import ua.skillsUp.wharehouse.models.ItemHistory;
+import ua.skillsUp.wharehouse.models.ItemsStatistic;
 import ua.skillsUp.wharehouse.services.ItemService;
 
 import java.util.HashMap;
@@ -29,13 +30,13 @@ public class ItemController {
     }
 
     @GetMapping(path = "/statisticForLastMonth")
-    public List<ItemHistory> getItemsStatisticForLastMonth() {
+    public ItemsStatistic getItemsStatisticForLastMonth() {
         log.info("Getting statistic for last month");
         return itemService.getItemsStatisticForLastMonth();
     }
 
     @GetMapping(path = "/statisticForLastDay")
-    public List<ItemHistory> getItemsStatisticForLastDay() {
+    public ItemsStatistic getItemsStatisticForLastDay() {
         log.info("Getting statistic for last day");
         return itemService.getItemsStatisticForLastDay();
     }

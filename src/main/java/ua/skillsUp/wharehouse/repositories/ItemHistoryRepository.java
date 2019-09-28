@@ -19,4 +19,6 @@ public interface ItemHistoryRepository extends JpaRepository<ItemHistoryEntity, 
     @Query("SELECT i FROM ItemHistoryEntity i JOIN FETCH i.item WHERE i.item.id in (:itemIds)")
     List<ItemHistoryEntity> findByItemIdsEagerly(@Param("itemIds") List<Long> itemIds);
 
+    @Query("SELECT i FROM ItemHistoryEntity i JOIN FETCH i.item WHERE i.date BETWEEN :startDate AND :endDate")
+    List<ItemHistoryEntity> findByDateRange(LocalDateTime startDate, LocalDateTime endDate);
 }

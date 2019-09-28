@@ -9,6 +9,7 @@ import ua.skillsUp.wharehouse.exeptions.NoSuchOwnerException;
 import ua.skillsUp.wharehouse.models.Category;
 import ua.skillsUp.wharehouse.models.Item;
 import ua.skillsUp.wharehouse.models.ItemHistory;
+import ua.skillsUp.wharehouse.models.ItemsStatistic;
 import ua.skillsUp.wharehouse.repositories.ItemHistoryRepository;
 import ua.skillsUp.wharehouse.repositories.ItemRepository;
 import ua.skillsUp.wharehouse.repositories.OwnerRepository;
@@ -17,8 +18,10 @@ import ua.skillsUp.wharehouse.repositories.entities.ItemEntity;
 import ua.skillsUp.wharehouse.repositories.entities.ItemHistoryEntity;
 import ua.skillsUp.wharehouse.repositories.entities.OwnerEntity;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,24 +59,52 @@ public class ItemService {
 
     }
 
-    public List<ItemHistory> getItemsStatisticForLastMonth() {
-        LocalDateTime dateFrom = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
-        LocalDateTime dateTo = dateFrom.minusDays(1L);
-        List<ItemHistoryEntity> entityHistories = itemHistoryRepository.findAllByDateBetween(dateTo, dateFrom);
-        return entityHistories.stream()
-                .map(ItemHistoryConverter::toItemHistory)
-                .collect(toList());
-
+    public ItemsStatistic getItemsStatisticForLastDay() {
+        LocalDateTime startDate = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
+        LocalDateTime endDate = LocalDateTime.of(LocalDate.now(), LocalTime.MAX);
+        return getItemsStatisticForPeriod(startDate, endDate);
     }
 
-    public List<ItemHistory> getItemsStatisticForLastDay() {
-        LocalDateTime dateFrom = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
-        LocalDateTime dateTo = dateFrom.minusMonths(1L);
-        List<ItemHistoryEntity> entityHistories = itemHistoryRepository.findAllByDateBetween(dateTo, dateFrom);
-        return entityHistories.stream()
-                .map(ItemHistoryConverter::toItemHistory)
-                .collect(toList());
+    public ItemsStatistic getItemsStatisticForLastMonth() {
+        LocalDateTime startDate = LocalDateTime.of(LocalDate.now().minusMonths(1L), LocalTime.MIN);
+        LocalDateTime endDate = LocalDateTime.of(LocalDate.now(), LocalTime.MAX);
+        return getItemsStatisticForPeriod(startDate, endDate);
+    }
 
+    private ItemsStatistic getItemsStatisticForPeriod(LocalDateTime startDate, LocalDateTime endDate) {
+        List<ItemHistoryEntity> itemsWithHistories = itemHistoryRepository.findByDateRange(startDate, endDate);
+
+        List<ItemHistoryEntity> storedItemHistories = getItemsHistoryWithStatus(itemsWithHistories, ItemHistoryStatus.STORED);
+
+        Integer storedAmount = getTotalAmount(storedItemHistories);
+
+        BigDecimal storedTotalCost = getTotalCost(storedItemHistories);
+
+        List<ItemHistoryEntity> withdrawnItemHistories = getItemsHistoryWithStatus(itemsWithHistories, ItemHistoryStatus.WITHDRAWED);
+
+        Integer withdrawnAmount = getTotalAmount(withdrawnItemHistories);
+
+        BigDecimal withdrawnTotalCost = getTotalCost(withdrawnItemHistories);
+
+        return new ItemsStatistic(storedAmount, withdrawnAmount, storedTotalCost, withdrawnTotalCost);
+    }
+
+    private Integer getTotalAmount(List<ItemHistoryEntity> itemHistoryEntities) {
+        return itemHistoryEntities.stream()
+                .map(itemHistoryEntity -> itemHistoryEntity.getCount())
+                .reduce(0, Integer::sum);
+    }
+
+    private BigDecimal getTotalCost(List<ItemHistoryEntity> itemHistoryEntities) {
+        return itemHistoryEntities.stream()
+                .map(itemHistoryEntity -> itemHistoryEntity.getItem().getPrice().multiply(BigDecimal.valueOf(itemHistoryEntity.getCount())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    private List<ItemHistoryEntity> getItemsHistoryWithStatus(List<ItemHistoryEntity> itemHistoryEntities, ItemHistoryStatus status) {
+        return itemHistoryEntities.stream()
+                .filter(itemHistoryEntity -> itemHistoryEntity.getStatus().equals(status.toString()))
+                .collect(Collectors.toList());
     }
 
     public List<Item> getOwnerItems(Long ownerId) {

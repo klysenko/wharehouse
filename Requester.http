@@ -20,7 +20,11 @@ GET http://localhost:8085/wharehouse/items
 
 ###
 
-GET http://localhost:8085/wharehouse/items/lastMonth
+GET http://localhost:8085/wharehouse/items/statisticForLastDay
+
+###
+
+GET http://localhost:8085/wharehouse/items/statisticForLastMonth
 
 ###
 
@@ -81,7 +85,7 @@ Content-Type: application/json
   "price": 100.00,
   "itemHistories": [
     {
-      "date": "17/09/2019 06:36",
+      "date": "28/09/2019 17:36",
       "count": 20
     }
   ],

@@ -1,0 +1,628 @@
+GET http://localhost:8085/wharehouse/items/statisticForLastMonth
+
+<> 2019-09-28T102846.200.json
+
+###
+
+GET http://localhost:8085/wharehouse/items/statisticForLastDay
+
+<> 2019-09-28T102839.200.json
+
+###
+
+POST http://localhost:8085/wharehouse/owners/1/items
+Content-Type: application/json
+
+{
+  "title": "dress",
+  "price": 100.00,
+  "itemHistories": [
+    {
+      "date": "28/09/2019 17:36",
+      "count": 20
+    }
+  ],
+  "categories": [
+    {
+      "categoryTitle": "clothes",
+      "description": "some description"
+    }
+  ]
+}
+
+###
+
+GET http://localhost:8085/wharehouse/items/statisticForLastMonth
+
+<> 2019-09-28T102737.200.json
+
+###
+
+GET http://localhost:8085/wharehouse/items/statisticForLastDay
+
+<> 2019-09-28T102733.200.json
+
+###
+
+GET http://localhost:8085/wharehouse/items/statisticForLastMonth
+
+<> 2019-09-28T102007.200.json
+
+###
+
+GET http://localhost:8085/wharehouse/items/statisticForLastDay
+
+<> 2019-09-28T101957.200.json
+
+###
+
+GET http://localhost:8085/wharehouse/items
+
+<> 2019-09-28T101943.200.json
+
+###
+
+GET http://localhost:8085/wharehouse/owners/1/items
+
+<> 2019-09-28T101918.200.json
+
+###
+
+GET http://localhost:8085/wharehouse/owners/active
+
+<> 2019-09-28T101732.200.json
+
+###
+
+GET http://localhost:8085/wharehouse/owners
+
+<> 2019-09-28T101726.200.json
+
+###
+
+GET http://localhost:8085/wharehouse/items/statisticForLastMonth
+
+<> 2019-09-22T103916.200.json
+
+###
+
+GET http://localhost:8085/wharehouse/items/statisticForLastDay
+
+<> 2019-09-22T103910.200.json
+
+###
+
+POST http://localhost:8085/wharehouse/items/withdraw
+Content-Type: application/json
+
+{
+  "1": "10",
+  "2": "10"
+}
+
+###
+
+GET http://localhost:8085/wharehouse/items/statisticForLastDay
+
+<> 2019-09-22T103731.200.json
+
+###
+
+GET http://localhost:8085/wharehouse/items/statisticForLastMonth
+
+<> 2019-09-22T103723.200.json
+
+###
+
+GET http://localhost:8085/wharehouse/items/statisticForLastDay
+
+<> 2019-09-22T103713.200.json
+
+###
+
+GET http://localhost:8085/wharehouse/items
+
+<> 2019-09-22T103700.200.json
+
+###
+
+POST http://localhost:8085/wharehouse/owners/1/items
+Content-Type: application/json
+
+{
+  "title": "dress",
+  "price": 100.00,
+  "itemHistories": [
+    {
+      "date": "20/09/2019 17:36",
+      "count": 20
+    }
+  ],
+  "categories": [
+    {
+      "categoryTitle": "clothes",
+      "description": "some description"
+    }
+  ]
+}
+
+###
+
+POST http://localhost:8085/wharehouse/owners/1/items
+Content-Type: application/json
+
+{
+  "title": "dress",
+  "price": 100.00,
+  "itemHistories": [
+    {
+      "date": "21/09/2019 17:36",
+      "count": 20
+    }
+  ],
+  "categories": [
+    {
+      "categoryTitle": "clothes",
+      "description": "some description"
+    }
+  ]
+}
+
+###
+
+POST http://localhost:8085/wharehouse/owners/1/items
+Content-Type: application/json
+
+{
+  "title": "dress",
+  "price": 100.00,
+  "itemHistories": [
+    {
+      "date": "22/09/2019 17:36",
+      "count": 20
+    }
+  ],
+  "categories": [
+    {
+      "categoryTitle": "clothes",
+      "description": "some description"
+    }
+  ]
+}
+
+###
+
+POST http://localhost:8085/wharehouse/owners/1/items
+Content-Type: application/json
+
+{
+  "title": "dress",
+  "price": 100.00,
+  "itemHistories": [
+    {
+      "date": "22/09/2019 07:36",
+      "count": 20
+    }
+  ],
+  "categories": [
+    {
+      "categoryTitle": "clothes",
+      "description": "some description"
+    }
+  ]
+}
+
+###
+
+POST http://localhost:8085/wharehouse/owners/1/items
+Content-Type: application/json
+
+{
+  "title": "dress",
+  "price": 100.00,
+  "itemHistories": [
+    {
+      "date": "22/09/2019 07:36",
+      "count": 20
+    }
+  ],
+  "categories": [
+    {
+      "categoryTitle": "clothes",
+      "description": "some description"
+    }
+  ]
+}
+
+###
+
+GET http://localhost:8085/wharehouse/items
+
+<> 2019-09-22T103522.200.json
+
+###
+
+GET http://localhost:8085/wharehouse/items/statisticForLastDay
+
+<> 2019-09-22T094057.200.json
+
+###
+
+POST http://localhost:8085/wharehouse/items/withdraw
+Content-Type: application/json
+
+{
+  "1": "10",
+  "2": "10"
+}
+
+###
+
+GET http://localhost:8085/wharehouse/items/statisticForLastDay
+
+<> 2019-09-22T093553.200.json
+
+###
+
+GET http://localhost:8085/wharehouse/owners/1/items
+
+<> 2019-09-22T093518.200.json
+
+###
+
+POST http://localhost:8085/wharehouse/owners/1/items
+Content-Type: application/json
+
+{
+  "title": "dress",
+  "price": 100.00,
+  "itemHistories": [
+    {
+      "date": "21/09/2019 07:36",
+      "count": 20
+    }
+  ],
+  "categories": [
+    {
+      "categoryTitle": "clothes",
+      "description": "some description"
+    }
+  ]
+}
+
+###
+
+POST http://localhost:8085/wharehouse/owners/1/items
+Content-Type: application/json
+
+{
+  "title": "dress",
+  "price": 100.00,
+  "itemHistories": [
+    {
+      "date": "22/09/2019 07:36",
+      "count": 20
+    }
+  ],
+  "categories": [
+    {
+      "categoryTitle": "clothes",
+      "description": "some description"
+    }
+  ]
+}
+
+###
+
+POST http://localhost:8085/wharehouse/owners/1/items
+Content-Type: application/json
+
+{
+  "title": "dress",
+  "price": 100.00,
+  "itemHistories": [
+    {
+      "date": "22/09/2019 12:36",
+      "count": 20
+    }
+  ],
+  "categories": [
+    {
+      "categoryTitle": "clothes",
+      "description": "some description"
+    }
+  ]
+}
+
+###
+
+GET http://localhost:8085/wharehouse/items/statisticForLastDay
+
+<> 2019-09-21T105128.200.json
+
+###
+
+POST http://localhost:8085/wharehouse/owners/1/items
+Content-Type: application/json
+
+{
+  "title": "dress",
+  "price": 100.00,
+  "itemHistories": [
+    {
+      "date": "21/09/2019 12:36",
+      "count": 20
+    }
+  ],
+  "categories": [
+    {
+      "categoryTitle": "clothes",
+      "description": "some description"
+    }
+  ]
+}
+
+###
+
+GET http://localhost:8085/wharehouse/items/statisticForLastDay
+
+<> 2019-09-21T103913.200.json
+
+###
+
+GET http://localhost:8085/wharehouse/items
+
+<> 2019-09-21T103408.200.json
+
+###
+
+POST http://localhost:8085/wharehouse/owners/1/items
+Content-Type: application/json
+
+{
+  "title": "dress",
+  "price": 100.00,
+  "itemHistories": [
+    {
+      "date": "21/09/2019 12:36",
+      "count": 20
+    }
+  ],
+  "categories": [
+    {
+      "categoryTitle": "clothes",
+      "description": "some description"
+    }
+  ]
+}
+
+###
+
+POST http://localhost:8085/wharehouse/owners/1/items
+Content-Type: application/json
+
+{
+  "title": "dress",
+  "price": 100.00,
+  "itemHistories": [
+    {
+      "date": "21/09/2019 06:36",
+      "count": 20
+    }
+  ],
+  "categories": [
+    {
+      "categoryTitle": "clothes",
+      "description": "some description"
+    }
+  ]
+}
+
+###
+
+POST http://localhost:8085/wharehouse/owners/1/items
+Content-Type: application/json
+
+{
+  "title": "dress",
+  "price": 100.00,
+  "itemHistories": [
+    {
+      "date": "17/09/2019 06:36",
+      "count": 20
+    }
+  ],
+  "categories": [
+    {
+      "categoryTitle": "clothes",
+      "description": "some description"
+    }
+  ]
+}
+
+###
+
+GET http://localhost:8085/wharehouse/items/lastMonth
+
+<> 2019-09-17T105439.200.json
+
+###
+
+GET http://localhost:8085/wharehouse/items
+
+<> 2019-09-17T105435.200.json
+
+###
+
+POST http://localhost:8085/wharehouse/owners/1/items
+Content-Type: application/json
+
+{
+  "title": "dress",
+  "price": 100.00,
+  "itemHistories": [
+    {
+      "date": "17/09/2019 06:36",
+      "count": 20
+    }
+  ],
+  "categories": [
+    {
+      "categoryTitle": "clothes",
+      "description": "some description"
+    }
+  ]
+}
+
+###
+
+POST http://localhost:8085/wharehouse/owners/1/items
+Content-Type: application/json
+
+{
+  "title": "dress",
+  "price": 100.00,
+  "itemHistories": [
+    {
+      "date": "17/09/2019 17:36",
+      "count": 20
+    }
+  ],
+  "categories": [
+    {
+      "categoryTitle": "clothes",
+      "description": "some description"
+    }
+  ]
+}
+
+###
+
+POST http://localhost:8085/wharehouse/owners/1/items
+Content-Type: application/json
+
+{
+  "title": "dress",
+  "price": 100.00,
+  "itemHistories": [
+    {
+      "date": "16/09/2019 17:36",
+      "count": 20
+    }
+  ],
+  "categories": [
+    {
+      "categoryTitle": "clothes",
+      "description": "some description"
+    }
+  ]
+}
+
+###
+
+POST http://localhost:8085/wharehouse/owners/1/items
+Content-Type: application/json
+
+{
+  "title": "dress",
+  "price": 100.00,
+  "itemHistories": [
+    {
+      "date": "15/09/2019 17:36",
+      "count": 20
+    }
+  ],
+  "categories": [
+    {
+      "categoryTitle": "clothes",
+      "description": "some description"
+    }
+  ]
+}
+
+###
+
+GET http://localhost:8085/wharehouse/items/lastMonth
+
+<> 2019-09-17T105314.200.json
+
+###
+
+GET http://localhost:8085/wharehouse/items
+
+<> 2019-09-17T105039.200.json
+
+###
+
+POST http://localhost:8085/wharehouse/owners/1/items
+Content-Type: application/json
+
+{
+  "title": "dress",
+  "price": 100.00,
+  "itemHistories": [
+    {
+      "date": "15/09/2019 17:36",
+      "count": 20
+    }
+  ],
+  "categories": [
+    {
+      "categoryTitle": "clothes",
+      "description": "some description"
+    }
+  ]
+}
+
+###
+
+POST http://localhost:8085/wharehouse/owners/1/items
+Content-Type: application/json
+
+{
+  "title": "dress",
+  "price": 100.00,
+  "itemHistories": [
+    {
+      "date": "16/09/2019 17:36",
+      "count": 20
+    }
+  ],
+  "categories": [
+    {
+      "categoryTitle": "clothes",
+      "description": "some description"
+    }
+  ]
+}
+
+###
+
+POST http://localhost:8085/wharehouse/owners/1/items
+Content-Type: application/json
+
+{
+  "title": "dress",
+  "price": 100.00,
+  "itemHistories": [
+    {
+      "date": "17/09/2019 17:36",
+      "count": 20
+    }
+  ],
+  "categories": [
+    {
+      "categoryTitle": "clothes",
+      "description": "some description"
+    }
+  ]
+}
+
+###
+
+GET http://localhost:8085/wharehouse/items/lastMonth
+
+<> 2019-09-17T103547.200.json
+
+###
+
