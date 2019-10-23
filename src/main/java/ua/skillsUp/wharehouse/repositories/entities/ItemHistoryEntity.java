@@ -1,13 +1,19 @@
 package ua.skillsUp.wharehouse.repositories.entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import ua.skillsUp.wharehouse.enums.ItemHistoryStatus;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Entity
+@EqualsAndHashCode(exclude = "item")
 @Table(name = "ITEM_HISTORY")
 public class ItemHistoryEntity {
 

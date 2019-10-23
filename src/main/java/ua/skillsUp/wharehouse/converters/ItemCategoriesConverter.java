@@ -8,6 +8,14 @@ import java.util.stream.Collectors;
 
 public class ItemCategoriesConverter {
 
+    public static Category toCategory(CategoryEntity categoryEntity) {
+        Category category = new Category();
+        category.setId(categoryEntity.getId());
+        category.setCategoryTitle(categoryEntity.getCategoryTitle());
+        category.setDescription(categoryEntity.getDescription());
+        return category;
+    }
+
     public static List<CategoryEntity> toCategoryEntity(List<Category> categories) {
         return categories.stream().map(category -> {
             CategoryEntity categoryEntity = new CategoryEntity();

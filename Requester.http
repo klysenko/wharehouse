@@ -28,6 +28,10 @@ GET http://localhost:8085/wharehouse/items/statisticForLastMonth
 
 ###
 
+GET http://localhost:8085/wharehouse/owners/top
+
+###
+
 POST http://localhost:8085/wharehouse/owners
 Content-Type: application/json
 

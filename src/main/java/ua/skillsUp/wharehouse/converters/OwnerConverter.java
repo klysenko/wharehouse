@@ -13,21 +13,33 @@ import static java.util.stream.Collectors.toList;
 public class OwnerConverter {
 
     public static Owner toOwner(OwnerEntity entity) {
+        if (entity == null) {
+            return null;
+        }
         Owner owner = new Owner();
         owner.setId(entity.getId());
         owner.setLogin(entity.getLogin());
         owner.setFirstName(entity.getFirstName());
         owner.setLastName(entity.getLastName());
         owner.setCompanyName(entity.getCompanyName());
-        owner.setContactsList(entity.getContacts()
-                .stream()
-                .map(OwnerConverter::toOwnerContact)
-                .collect(toList()));
+
+        if (entity.getContacts() != null) {
+            owner.setContactsList(entity.getContacts()
+                    .stream()
+                    .map(OwnerConverter::toOwnerContact)
+                    .collect(toList()));
+        }
 
         return owner;
     }
 
-    public static OwnerContact toOwnerContact(OwnerContactsEntity entity) {
+    public static List<Owner> toOwners(List<OwnerEntity> ownerEntities) {
+        return ownerEntities.stream()
+                .map(OwnerConverter::toOwner)
+                .collect(toList());
+    }
+
+    private static OwnerContact toOwnerContact(OwnerContactsEntity entity) {
         OwnerContact ownerContact = new OwnerContact();
         ownerContact.setId(entity.getId());
         ownerContact.setContact(entity.getContact());
@@ -37,7 +49,8 @@ public class OwnerConverter {
     }
 
     public static List<OwnerContactsEntity> toOwnerContactsEntity(List<OwnerContact> ownerContact) {
-        return ownerContact.stream().map(ownerContact1 -> {
+        return ownerContact.stream()
+                .map(ownerContact1 -> {
             OwnerContactsEntity ownerContactsEntity = new OwnerContactsEntity();
             ownerContactsEntity.setId(ownerContact1.getId());
             ownerContactsEntity.setContact(ownerContact1.getContact());

@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ua.skillsUp.wharehouse.models.Item;
-import ua.skillsUp.wharehouse.models.ItemHistory;
 import ua.skillsUp.wharehouse.models.ItemsStatistic;
 import ua.skillsUp.wharehouse.services.ItemService;
 

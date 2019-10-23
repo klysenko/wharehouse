@@ -3,17 +3,14 @@ package ua.skillsUp.wharehouse.services;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ua.skillsUp.wharehouse.converters.ItemHistoryConverter;
+import ua.skillsUp.wharehouse.converters.ItemConverter;
 import ua.skillsUp.wharehouse.enums.ItemHistoryStatus;
 import ua.skillsUp.wharehouse.exeptions.NoSuchOwnerException;
-import ua.skillsUp.wharehouse.models.Category;
 import ua.skillsUp.wharehouse.models.Item;
-import ua.skillsUp.wharehouse.models.ItemHistory;
 import ua.skillsUp.wharehouse.models.ItemsStatistic;
 import ua.skillsUp.wharehouse.repositories.ItemHistoryRepository;
 import ua.skillsUp.wharehouse.repositories.ItemRepository;
 import ua.skillsUp.wharehouse.repositories.OwnerRepository;
-import ua.skillsUp.wharehouse.repositories.entities.CategoryEntity;
 import ua.skillsUp.wharehouse.repositories.entities.ItemEntity;
 import ua.skillsUp.wharehouse.repositories.entities.ItemHistoryEntity;
 import ua.skillsUp.wharehouse.repositories.entities.OwnerEntity;
@@ -22,7 +19,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -32,12 +28,10 @@ import java.util.stream.Collectors;
 import static java.util.stream.Collectors.toList;
 import static ua.skillsUp.wharehouse.converters.ItemCategoriesConverter.toCategoryEntity;
 import static ua.skillsUp.wharehouse.converters.ItemHistoryConverter.toItemHistoryEntity;
-import static ua.skillsUp.wharehouse.converters.OwnerConverter.toOwner;
 
 @Slf4j
 @Service
 public class ItemService {
-
     private final OwnerRepository ownerRepository;
     private final ItemRepository itemRepository;
     private final ItemHistoryRepository itemHistoryRepository;
@@ -51,10 +45,9 @@ public class ItemService {
     }
 
     public List<Item> getAllItems() {
-
         List<ItemEntity> entities = itemRepository.findAll();
         return entities.stream()
-                .map(ItemService::toItem)
+                .map(ItemConverter::toItem)
                 .collect(toList());
 
     }
@@ -91,7 +84,7 @@ public class ItemService {
 
     private Integer getTotalAmount(List<ItemHistoryEntity> itemHistoryEntities) {
         return itemHistoryEntities.stream()
-                .map(itemHistoryEntity -> itemHistoryEntity.getCount())
+                .map(ItemHistoryEntity::getCount)
                 .reduce(0, Integer::sum);
     }
 
@@ -114,40 +107,8 @@ public class ItemService {
         }
 
         return owner.get().getItems().stream()
-                .map(itemEntity -> {
-                    Item item = new Item();
-                    item.setId(itemEntity.getId());
-                    item.setTitle(itemEntity.getTitle());
-                    item.setPrice(itemEntity.getPrice());
-                    item.setOwner(toOwner(itemEntity.getOwner()));
-                    item.setItemHistories(itemEntity.getItemHistory()
-                            .stream()
-                            .map(ItemHistoryConverter::toItemHistory)
-                            .collect(toList()));
-                    item.setCategories(itemEntity.getCategories().stream()
-                            .map(ItemService::toCategory)
-                            .collect(toList()));
-                    return item;
-                })
+                .map(ItemConverter::toItem)
                 .collect(toList());
-    }
-
-
-    private static Category toCategory(CategoryEntity categoryEntity) {
-        Category category = new Category();
-        category.setId(categoryEntity.getId());
-        category.setCategoryTitle(categoryEntity.getCategoryTitle());
-        category.setDescription(categoryEntity.getDescription());
-        return category;
-    }
-
-    private static Item toItem(ItemEntity entity) {
-        Item item = new Item();
-        item.setId(entity.getId());
-        item.setTitle(entity.getTitle());
-        item.setPrice(entity.getPrice());
-
-        return item;
     }
 
     @Transactional
@@ -210,5 +171,4 @@ public class ItemService {
                 .map(ItemHistoryEntity::getCount)
                 .reduce(0, Integer::sum);
     }
-
 }

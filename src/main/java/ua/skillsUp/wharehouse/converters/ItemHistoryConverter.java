@@ -1,6 +1,5 @@
 package ua.skillsUp.wharehouse.converters;
 
-import org.springframework.stereotype.Component;
 import ua.skillsUp.wharehouse.models.ItemHistory;
 import ua.skillsUp.wharehouse.repositories.entities.ItemHistoryEntity;
 
