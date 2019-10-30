@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import ua.skillsUp.wharehouse.converters.ItemHistoryConverter;
 import ua.skillsUp.wharehouse.enums.ItemHistoryStatus;
 import ua.skillsUp.wharehouse.models.Item;
 import ua.skillsUp.wharehouse.models.Owner;
@@ -21,8 +22,12 @@ import ua.skillsUp.wharehouse.repositories.entities.OwnerEntity;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
+import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
@@ -58,8 +63,10 @@ public class OwnerServiceTest {
         expectedOwner.setLastName("testLastName");
         expectedOwner.setCompanyName("testCompanyName");
         expectedOwner.setLogin("testLogin");
+        expectedOwner.setContactsList(new ArrayList<>());
+        expectedOwner.setItemList(new ArrayList<>());
 
-        List<OwnerEntity> expectedOwners = Collections.singletonList(owner);
+        List<OwnerEntity> expectedOwners = singletonList(owner);
         given(ownerRepository.findAll()).willReturn(expectedOwners);
 
         //WHEN
@@ -100,6 +107,8 @@ public class OwnerServiceTest {
     private Owner createOwnerWithId(long id) {
         Owner owner = new Owner();
         owner.setId(id);
+        owner.setContactsList(new ArrayList<>());
+        owner.setItemList(new ArrayList<>());
         return owner;
     }
 
@@ -108,7 +117,7 @@ public class OwnerServiceTest {
         when(itemEntity.getPrice()).thenReturn(price);
         ItemHistoryEntity itemHistoryEntity7 =
                 new ItemHistoryEntity(id, itemEntity, LocalDateTime.now(), count, ItemHistoryStatus.STORED.toString());
-        List<ItemHistoryEntity> itemHistoryEntityList7 = Collections.singletonList(itemHistoryEntity7);
+        List<ItemHistoryEntity> itemHistoryEntityList7 = singletonList(itemHistoryEntity7);
         when(itemEntity.getItemHistory()).thenReturn(itemHistoryEntityList7);
         OwnerEntity ownerEntity = new OwnerEntity();
         ownerEntity.setId(id);
@@ -129,9 +138,9 @@ public class OwnerServiceTest {
         itemEntity1.setPrice(new BigDecimal(500));
         ItemHistoryEntity itemHistoryEntity1 =
                 new ItemHistoryEntity(1L, itemEntity1, LocalDateTime.now(), 2, ItemHistoryStatus.STORED.toString());
-        List<ItemHistoryEntity> itemHistoryEntityList1 = Collections.singletonList(itemHistoryEntity1);
+        List<ItemHistoryEntity> itemHistoryEntityList1 = singletonList(itemHistoryEntity1);
         itemEntity1.setItemHistory(itemHistoryEntityList1);
-        owner1.setItems(Collections.singletonList(itemEntity1));
+        owner1.setItems(singletonList(itemEntity1));
 
         OwnerEntity owner2 = new OwnerEntity();
         owner2.setId(124L);
@@ -140,19 +149,21 @@ public class OwnerServiceTest {
         owner2.setCompanyName("testCompanyName");
         owner2.setLogin("testLogin");
 
+        Item expectedItem = new Item();
+        expectedItem.setId(1L);
+        expectedItem.setPrice(new BigDecimal(500));
+        expectedItem.setItemHistories(singletonList(ItemHistoryConverter.toItemHistory(itemHistoryEntity1)));
+
         Owner expectedOwner = new Owner();
         expectedOwner.setId(123L);
         expectedOwner.setFirstName("testFirstName");
         expectedOwner.setLastName("testLastName");
         expectedOwner.setCompanyName("testCompanyName");
         expectedOwner.setLogin("testLogin");
+        expectedOwner.setContactsList(new ArrayList<>());
+        expectedOwner.setItemList(singletonList(expectedItem));
 
-        Item expectedItem = new Item();
-        expectedItem.setId(1L);
-        expectedItem.setPrice(new BigDecimal(500));
-        expectedOwner.setItemList(Collections.singletonList(expectedItem));
-
-        given(ownerRepository.findAllByItemsNotNull()).willReturn(Collections.singletonList(owner1));
+        given(ownerRepository.findAllByItemsNotNull()).willReturn(singletonList(owner1));
 
         //WHEN
         List<Owner> actualOwners = ownerService.getAllActiveOwners();
@@ -170,7 +181,7 @@ public class OwnerServiceTest {
         //WHEN
         ownerService.deleteOwner(1L);
         //THEN
-        verify(ownerRepository).deleteById(1l);
+        verify(ownerRepository).deleteById(1L);
     }
 
     @Test
@@ -187,7 +198,7 @@ public class OwnerServiceTest {
         when(contact.getContact()).thenReturn("contact");
         when(contact.getContactType()).thenReturn("contactType");
         when(contact.getId()).thenReturn(1L);
-        List<OwnerContact> ownerContacts = Collections.singletonList(contact);
+        List<OwnerContact> ownerContacts = singletonList(contact);
         when(owner.getContactsList()).thenReturn(ownerContacts);
 
         OwnerEntity ownerEntity = new OwnerEntity();
@@ -196,7 +207,7 @@ public class OwnerServiceTest {
         ownerEntity.setCompanyName("testCompanyName");
         ownerEntity.setLogin("testLogin");
         OwnerContactsEntity contactEntity = new OwnerContactsEntity();
-        List<OwnerContactsEntity> ownerContactsEntities = Collections.singletonList(contactEntity);
+        List<OwnerContactsEntity> ownerContactsEntities = singletonList(contactEntity);
         contactEntity.setId(1L);
         contactEntity.setContact("contact");
         contactEntity.setContactType("contactType");

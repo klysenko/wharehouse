@@ -122,20 +122,22 @@ public class ItemService {
         ItemEntity itemEntity = new ItemEntity();
         itemEntity.setTitle(item.getTitle());
         itemEntity.setPrice(item.getPrice());
+        itemEntity.setCategories(toCategoryEntity(item.getCategories()));
+
         itemRepository.save(itemEntity);
+
         itemHistoryEntities.forEach(itemHistoryEntity -> itemHistoryEntity.setItem(itemEntity));
         itemHistoryRepository.saveAll(itemHistoryEntities);
         itemEntity.setOwner(owner.get());
-        itemEntity.setCategories(toCategoryEntity(item.getCategories()));
-
         owner.get().getItems().add(itemEntity);
     }
 
     @Transactional
     public void withdrawItems(Map<Long, Integer> itemIdsByCount) {
         List<Long> itemIds = new ArrayList<>(itemIdsByCount.keySet());
-        Map<Long, List<ItemHistoryEntity>> itemIdByItemHistories = itemHistoryRepository.findByItemIdsEagerly(itemIds).stream()
-                .collect(Collectors.groupingBy(i -> i.getItem().getId()));
+        Map<Long, List<ItemHistoryEntity>> itemIdByItemHistories =
+                itemHistoryRepository.findByItemIdsEagerly(itemIds).stream()
+                        .collect(Collectors.groupingBy(i -> i.getItem().getId()));
 
         List<ItemHistoryEntity> itemHistoryEntityToSave = itemIdsByCount.entrySet().stream()
                 .map(itemIdsByCountEntry -> {

@@ -23,6 +23,13 @@ public class OwnerConverter {
         owner.setLastName(entity.getLastName());
         owner.setCompanyName(entity.getCompanyName());
 
+        if (entity.getItems() != null) {
+            owner.setItemList(entity.getItems()
+                    .stream()
+                    .map(ItemConverter::toItem)
+                    .collect(toList()));
+        }
+
         if (entity.getContacts() != null) {
             owner.setContactsList(entity.getContacts()
                     .stream()

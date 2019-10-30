@@ -3,6 +3,7 @@ package ua.skillsUp.wharehouse.repositories.entities;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -21,10 +22,10 @@ public class OwnerEntity {
     private String firstName;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
-    private List<OwnerContactsEntity> contacts;
+    private List<OwnerContactsEntity> contacts = new ArrayList<>();
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
-    private List<ItemEntity> items;
+    private List<ItemEntity> items = new ArrayList<>();
 
     @Column(name = "LAST_NAME")
     private String lastName;
